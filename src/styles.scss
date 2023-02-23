@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+@use "angular-notifier/styles";
+
+/**
+Add this to angular.json under build -> options to for @use to work
+"stylePreprocessorOptions": {
+  "includePaths": [
+    "node_modules"
+  ]
+}
+*/
+
+.cursor {
+  cursor: pointer !important;
+}

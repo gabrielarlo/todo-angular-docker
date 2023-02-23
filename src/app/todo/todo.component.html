@@ -1,0 +1,99 @@
+<div class="container py-3">
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-8">
+          <h3>TODO's</h3>
+        </div>
+        <div class="col-4">
+          <div class="row justify-content-end align-items-center">
+            <div class="col-auto cursor" (click)="toggleEditMode()">
+              <span class="align-top p-1">Edit Mode</span>
+              <i
+                class="bx bx-toggle-{{ editMode ? 'right' : 'left' }} bx-sm bx-flashing-hover text-{{ editMode ? 'warning' : 'muted' }}"></i>
+            </div>
+            <div class="col-auto">
+              <i class='bx bx-list-plus bx-md bx-burst-hover text-primary cursor' data-bs-toggle="modal"
+                data-bs-target="#createModal" (click)="id = undefined"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-between text-muted">
+        <div class="col-auto">
+          Incomplete: {{ incomplete }} out of {{ list.length }} items
+        </div>
+        <div class="col-auto">
+          Completed: {{ complete }} items
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <div *ngFor="let item of list" class="card mb-3 cursor">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-auto" (click)="toggle(item.id)">
+              <i *ngIf="item.done" class='bx bxs-check-square bx-md text-success'></i>
+              <i *ngIf="!item.done" class='bx bx-checkbox bx-md'></i>
+            </div>
+            <div class="col" (click)="toggle(item.id)">
+              <h5 class="{{ item.done ? 'text-decoration-line-through text-muted' : '' }}">{{ item.title }}</h5>
+              <small class="text-muted"><i>Latest Update: {{ item.updated_at | date:'medium' }}</i></small> <br>
+              <small class="text-muted">{{ item.description }}</small>
+            </div>
+            <div *ngIf="editMode" class="col-auto">
+              <div class="row">
+                <div class="col">
+                  <i class='bx bx-edit-alt bx-sm text-info' data-bs-toggle="modal" data-bs-target="#createModal"
+                    (click)="selectItem(item)"></i>
+                </div>
+                <div class="col">
+                  <i (click)="delete(item.id)" class='bx bx-trash bx-sm text-danger bx-flashing-hover'></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Body -->
+<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+<div class="modal fade" id="createModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+  aria-labelledby="modalTitleId" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitleId">{{ id == undefined ? 'Add' : 'Update' }} Item</h5>
+        <button [disabled]="loading" type="button" class="btn-close" data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="submitForm" (submit)="submit()">
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" name="title" id="title" placeholder="Title" [(ngModel)]="title">
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" name="description" id="description" rows="3"
+              aria-describedby="descriptionHint" [(ngModel)]="description" maxlength="256"></textarea>
+            <small id="descriptionHint" class="form-text text-muted">Max: 256 chars | Input: {{ description.length
+              }}</small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="loading" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button [disabled]="loading" type="submit" form="submitForm" class="btn btn-primary">{{ id ==
+          undefined ? 'Add'
+          : 'Update' }}</button>
+      </div>
+    </div>
+  </div>
+</div>
