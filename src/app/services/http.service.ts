@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { lastValueFrom, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiResponse } from '../interfaces/api-response';
@@ -12,7 +13,11 @@ export class HttpService {
   private headers: HttpHeaders = new HttpHeaders();
   private api: string = environment.api;
 
-  constructor(private http: HttpClient, private _notify: NotifyService) {
+  constructor(
+    private http: HttpClient,
+    private _notify: NotifyService,
+    private _spinner: NgxSpinnerService
+  ) {
     this._getHeaders();
   }
 
@@ -23,6 +28,7 @@ export class HttpService {
   ): Promise<any> {
     console.log('GET: ' + uri);
 
+    this._spinner.show();
     this._getHeaders();
     const httpParams: HttpParams = this._getParams(params);
     const response$ = this.http.get<ApiResponse>(this.api + uri, {
@@ -33,6 +39,7 @@ export class HttpService {
       responseType: 'json',
     });
     const _res: ApiResponse = await lastValueFrom(response$);
+    this._spinner.hide();
     if (!this._isSuccessful(_res, showSuccess)) return null;
 
     return _res.data;
@@ -45,6 +52,7 @@ export class HttpService {
   ): Promise<any> {
     console.log('POST: ' + uri);
 
+    this._spinner.show();
     this._getHeaders();
     const response$ = this.http.post<ApiResponse>(this.api + uri, body, {
       headers: this.headers,
@@ -53,6 +61,7 @@ export class HttpService {
       responseType: 'json',
     });
     const _res: ApiResponse = await lastValueFrom(response$);
+    this._spinner.hide();
     if (!this._isSuccessful(_res, showSuccess)) return null;
 
     return _res.data;
@@ -61,6 +70,7 @@ export class HttpService {
   async delete(uri: string, showSuccess: boolean = false): Promise<any> {
     console.log('DELETE: ' + uri);
 
+    this._spinner.show();
     this._getHeaders();
     const response$ = this.http.delete<ApiResponse>(this.api + uri, {
       headers: this.headers,
@@ -69,6 +79,7 @@ export class HttpService {
       responseType: 'json',
     });
     const _res: ApiResponse = await lastValueFrom(response$);
+    this._spinner.hide();
     if (!this._isSuccessful(_res, showSuccess)) return null;
 
     return _res.data;

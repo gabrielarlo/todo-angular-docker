@@ -3,11 +3,13 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -59,6 +61,8 @@ const customNotifierOptions: NotifierOptions = {
     AppRoutingModule,
     HttpClientModule,
     NotifierModule.withConfig(customNotifierOptions),
+    BrowserAnimationsModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
   ],
   providers: [],
   bootstrap: [AppComponent],

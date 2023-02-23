@@ -39,9 +39,10 @@ export class TodoComponent implements OnInit {
     this.loading = true;
     if (this.id == undefined) {
       const res = await this._todoService.add(this.title, this.description);
-      console.log(res);
       if (res != null) {
         this.getList();
+        this.title = '';
+        this.description = '';
       }
       this.loading = false;
     } else {
