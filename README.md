@@ -23,4 +23,8 @@ export const environment = {
 };
 ```
 
+### For Docker
+1. run `docker build -t ng-docker-app:v1.0.0 -f ./Dockerfile .`
+2. then `docker run -p 4280:80 -d ng-docker-app:v1.0.0`
+
 ### Done!
