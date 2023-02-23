@@ -24,7 +24,11 @@ export const environment = {
 ```
 
 ### For Docker
-1. run `docker build -t ng-docker-app:v1.0.0 -f ./Dockerfile .`
-2. then `docker run -p 4280:80 -d ng-docker-app:v1.0.0`
+1. run `docker build -t angular-nginx-docker:v1.0.0 -f ./Dockerfile .`
+2. then `docker run -p 4280:80 -d angular-nginx-docker:v1.0.0`
+
+or
+
+1. run `docker-compose up --build -d angular-nginx-docker`
 
 ### Done!
