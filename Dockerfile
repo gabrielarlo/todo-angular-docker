@@ -12,9 +12,8 @@ WORKDIR /dist/src/app
 RUN npm cache clean --force
 # Copy files from local machine to virtual directory in docker image
 COPY . .
-RUN npm install
-RUN npm run build
-
+RUN yarn install
+RUN yarn run build
 
 ### STAGE 2:RUN ###
 # Defining nginx image to be used
